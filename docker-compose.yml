@@ -1,0 +1,38 @@
+version: "3.8"
+services:
+  backend:
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend/:/app
+    depends_on:
+      - database
+    links:
+      - database
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/:/app
+    depends_on:
+      - backend
+
+  database:
+      container_name: db
+      build:
+        context: ./database
+        dockerfile: Dockerfile
+      ports:
+        - "5432:5432"
+      environment:
+        - POSTGRES_USER=thabish
+        - POSTGRES_PASSWORD=dexter3000
